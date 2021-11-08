@@ -1,34 +1,34 @@
+const clutter = imports.gi.Clutter
+const glib = imports.gi.GLib
+const main = imports.ui.main
+const st = imports.gi.St
 
-const { St, Clutter } = imports.gi
-const Main = imports.ui.main
-const GLib = imports.gi.GLib
-
-let panelButton
+let bin
 
 function init () {
-  // Create a Button with "Hello World" text
-  panelButton = new St.Bin({
+  bin = new st.Bin({
     style_class: 'panel-button'
   })
 
-  const panelButtonText = new St.Label({
-    text: 'Hello World test',
-    y_align: Clutter.ActorAlign.CENTER
+  const label = new st.Label({
+    text: 'init',
+    y_align: clutter.ActorAlign.CENTER
   })
 
-  panelButton.set_child(panelButtonText)
+  bin.set_child(label)
 
-  GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 10, () => {
-    panelButtonText.set_text('Jesus')
+  /** update label every 10 seconds */
+  glib.timeout_add_seconds(glib.PRIORITY_DEFAULT, 10, () => {
+    label.set_text('10 seconds')
   })
 }
 
 function enable () {
-  // Add the button to the panel
-  Main.panel._rightBox.insert_child_at_index(panelButton, 0)
+  /** add bin to main panel */
+  main.panel._rightBox.insert_child_at_index(bin, 0)
 }
 
 function disable () {
-  // Remove the added button rrom panel
-  Main.panel._rightBox.remove_child(panelButton)
+  /** remove bin from main panel */
+  main.panel._rightBox.remove_child(bin)
 }
